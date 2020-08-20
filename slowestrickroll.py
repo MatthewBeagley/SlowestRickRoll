@@ -17,12 +17,12 @@ twitter = Twython(
 )
 
 while True:
-	time.sleep(120)
 	temp = lyrics.pop(0)
 	twitter.update_status(status=temp)
 	print("Tweeted: %s" % temp)
 	print(temp)
 	lyrics.append(temp)
+	time.sleep(60 * 60 * 1)
 
 
 # message = "Hello world!"
