@@ -6,12 +6,6 @@ CONSUMER_KEY = environ['CONSUMER_KEY']
 CONSUMER_SECRET = environ['CONSUMER_SECRET']
 ACCESS_KEY = environ['ACCESS_KEY']
 ACCESS_SECRET = environ['ACCESS_SECRET']
-# (
-#     consumer_key,
-#     consumer_secret,
-#     access_token,
-#     access_token_secret
-# )
 
 from lyrics import lyrics
 
@@ -23,7 +17,7 @@ twitter = Twython(
 )
 
 while True:
-	time.sleep(60)
+	time.sleep(120)
 	temp = lyrics.pop(0)
 	twitter.update_status(status=temp)
 	print("Tweeted: %s" % temp)
