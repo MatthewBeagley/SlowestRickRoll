@@ -1,30 +1,35 @@
 import time
-from twython import Twython
-
-from os import environ 
-CONSUMER_KEY = environ['CONSUMER_KEY']
-CONSUMER_SECRET = environ['CONSUMER_SECRET']
-ACCESS_KEY = environ['ACCESS_KEY']
-ACCESS_SECRET = environ['ACCESS_SECRET']
-
-from lyrics import lyrics
-
-twitter = Twython(
-    CONSUMER_KEY,
-    CONSUMER_SECRET,
-    ACCESS_KEY,
-    ACCESS_SECRET
-)
-
-while True:
-	temp = lyrics.pop(0)
-	twitter.update_status(status=temp)
-	print("Tweeted: %s" % temp)
-	print(temp)
-	lyrics.append(temp)
-	time.sleep(60 * 60 * 1)
+import datetime
+import credentials
+import tweepy
+import numpy as num
 
 
-# message = "Hello world!"
-# twitter.update_status(status=message)
-# print("Tweeted: %s" % message)
+#set api credentials
+CONSUMER_KEY = credentials.consumer_key
+CONSUMER_SECRET = credentials.consumer_secret
+ACCESS_KEY = credentials.access_token
+ACCESS_SECRET = credentials.access_token_secret
+
+#intialize api
+auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
+auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
+
+api = tweepy.API(auth)
+
+#open file
+fileObj = open("lyrics.txt", "r")
+words = fileObj.read().splitlines()
+fileObj.close()
+
+#tweet
+temp = words.pop(0)
+api.update_status(temp)
+words.append(temp)
+
+#debug messages
+print("Tweeted: %s" % temp)
+print(datetime.datetime.now())
+
+#save to file
+num.savetxt("lyrics.txt", words, delimiter=" ", fmt="%s")
